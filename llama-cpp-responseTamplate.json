@@ -1,0 +1,19 @@
+{
+    "choices": [
+        {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": "None",
+            "text": "함수: show_cart\n파라미터: {}"
+        }
+    ],
+    "created": 1768542929,
+    "id": "cmpl-c7b8cdd2-094f-4acc-9ef5-048e673a4ac0",
+    "model": "/Users/iseoin/Python_Project/multi-agent/gemma-3-4b-it-q4_0.gguf",
+    "object": "text_completion",
+    "usage": {
+        "completion_tokens": 13,
+        "prompt_tokens": 298,
+        "total_tokens": 311
+    }
+}

@@ -4,3 +4,4 @@ gemma-3-4b-it-q4_0.gguf
 test-gpt-api
 data-archive
 test-funcgemma
+.gitignore
