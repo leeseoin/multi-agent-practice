@@ -1,0 +1,15 @@
+{
+    "permissions": {
+        "allow": [],
+        "deny": [
+            "Bash(curl:*)",
+            "Bash(apt install:*)",
+            "Bash(npm install:*)",
+            "Bash(docker exec:*)",
+            "Read(./.env)",
+            "Read(./.env.*)",
+            "Edit(./.env)",
+            "Edit(./.env.*)"
+        ]
+    }
+}
