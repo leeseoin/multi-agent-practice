@@ -30,8 +30,11 @@ Qwen → Gemma-3-4b-it_q4_0.gguf 에 맞게 코드를 수정하였습니다.
 ```
 
 ### 실행결과
-파란네모가 사용자 질문, 빨간 네모가 gemma가 답변한 결과
-![장바구니 질문 결과]./result_img_dir/result1.png
-![반품 관련 질문 결과]./result_img_dir/result2.png
-![주문내역 관련 질문 결과]./result_img_dir/result3.png
-![물건 검색 질문 결과]./result_img_dir/result4.png
+파란 네모: 사용자 질문 / 빨간 네모: Gemma 답변
+
+| 장바구니 | 반품 |
+| :---: | :---: |
+| ![장바구니 질문 결과](./result_img_dir/result1.png) | ![반품 관련 질문 결과](./result_img_dir/result2.png) |
+| 주문내역 | 물건 검색 |
+| :---: | :---: |
+|![주문내역 관련 질문 결과](./result_img_dir/result3.png) | ![물건 검색 질문 결과](./result_img_dir/result4.png) |
