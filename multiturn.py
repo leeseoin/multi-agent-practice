@@ -4,18 +4,27 @@ import gradio as gr
 import json
 import re
 from typing import Dict, List, Any, Tuple, Optional
-from vllm import LLM, SamplingParams
+from llama_cpp import Llama
 
 # 모델 로드
-MODEL_NAME = "iamjoon/Qwen2.5-7B-Instruct-ecommerce-function-calling"  # 실제 사용할 모델명으로 변경하세요
-llm = LLM(model=MODEL_NAME)
+MODEL_PATH = "/Users/iseoin/Python_Project/multi-agent/gemma-3-4b-it-q4_0.gguf"
+print(f"{MODEL_PATH} 모델 로딩 중..")
+llm = Llama(
+    model=MODEL_PATH,
+    n_ctx=4096,
+    n_threads=8,
+    n_gpu_layers=-1,
+    verbose=False
+)
+print(f"{MODEL_PATH} 모델 로딩 완료!!!\n")
+
 sampling_params = SamplingParams(temperature=0, max_tokens=1024)
 
 
 class ConversationManager:
     def __init__(self, llm):
         self.history = []
-        self.system_prompt = """당신은 상준몰의 AI 상담사입니다. 성심성의껏 상담하십시오.
+        self.system_prompt = """당신은 서인몰의 AI 상담사입니다. 성심성의껏 상담하십시오.
 
 로그인한 사용자의 현재 ID: U006
 오늘 날짜: 2024-02-02

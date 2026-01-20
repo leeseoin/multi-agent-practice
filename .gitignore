@@ -5,3 +5,4 @@ test-gpt-api
 data-archive
 test-funcgemma
 .gitignore
+result_img_dir

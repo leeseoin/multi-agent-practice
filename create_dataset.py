@@ -208,7 +208,7 @@ def show_cart(user_id):
     }
 
 
-# 2. 제품 검색 함수 (예, "노트북")
+# 2. 제품 검색 함수 (예: "노트북")
 def search_product(keyword, category=None):
     # 기본 키워드로 제품명에 포함하는 항목 검색
     condition = df_products['name'].str.contains(keyword, case=False, na=False)
@@ -230,7 +230,7 @@ def search_product(keyword, category=None):
         "products": results.to_dict(orient="records")
     }
 
-# 3. 장바구니에 상품 추가 함수
+# 3. 장바구니에 상품 추가하는 함수
 def add_to_cart(user_id, product_id, quantity=1):
     global df_carts
     new_id = f"C{str(len(df_carts) + 1).zfill(3)}"
@@ -252,7 +252,7 @@ def add_to_cart(user_id, product_id, quantity=1):
         "cart_item": new_item
     }
 
-# 4. 장바구니에서 상품 제거 함수
+# 4. 장바구니에서 상품 제거하는 함수
 def remove_from_cart(user_id, keyword=None, product_id=None):
     global df_carts
 
@@ -370,7 +370,7 @@ def view_order_details(user_id, order_id):
     result = details[["order_id", "product_id", "name", "quantity", "price", "discount_price"]]
     return result.to_dict(orient="records")
 
-# 7. 사용자 정보 조회
+# 7. 사용자 정보 조회 함수
 def view_user_profile(user_id):
     """
     주어진 user_id에 해당하는 사용자의 프로필 정보를 반환합니다.

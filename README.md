@@ -2,11 +2,15 @@
 
 ## 프로젝트 개요
 ### 개요
-해당 프로젝트는 쇼핑몰 멀티 에이전트 구현 코드입니다. 
-참고한 링크: https://github.com/llm-fine-tuning/trl/blob/main/function_calling_single_gpu_fine_tuning_qwen/5.%20multi_turn_chatbot.ipynb 
-위 사이트를 참조해서 만들었습니다. 해당 사이트에서는 리소스를 gpu/Qwen 모델을 사용하였습니다.
-gpu → metal(Macbook Pro M3)
-Qwen → Gemma-3-4b-it_q4_0.gguf 에 맞게 코드를 수정하였습니다.
+
+해당 프로젝트는 쇼핑몰 멀티 에이전트 구현 코드입니다.<br>
+참고한 링크: https://github.com/llm-fine-tuning/trl/blob/main/function_calling_single_gpu_fine_tuning_qwen/5.%20multi_turn_chatbot.ipynb<br>
+위 사이트를 참조해서 만들었습니다. 해당 사이트에서는 리소스를 GPU/Qwen 모델을 사용하였습니다.<br>
+
+**리소스 변경 사항**
+* **GPU:** NVIDIA GPU → **Apple Silicon Metal (Macbook Pro M3)**
+* *Model:** Qwen2.5-7B → **Gemma-3-4b-it_q4_0.gguf**
+
 
 ### 1. 프로젝트 구조(마지막 업데이트 일시: 2026-01-16 18:10)
 ```
@@ -18,7 +22,7 @@ Qwen → Gemma-3-4b-it_q4_0.gguf 에 맞게 코드를 수정하였습니다.
 ├── gemma-3-4b-it_chatTamplate.json                          # gemma-3 챗 템플릿
 ├── gemma-3-4b-it_chatTamplate.txt                           # gemma-3 챗 템플릿(보기 더 편하게 텍스트 파일로 구성)
 ├── llama-cpp-responseTamplate.json                          # llama-cpp 엔진에서 response하는 구조
-├── llama-cpp.txt                                            # 
+├── llama-cpp.txt                                            # test_function_execution.py 실행한 결과값
 ├── multiturn.py                                             # 멀티턴 예제 코드
 ├── README.md
 ├── schemas.py                                               # 대화 I/O(Req/Res) 구조
@@ -36,5 +40,4 @@ Qwen → Gemma-3-4b-it_q4_0.gguf 에 맞게 코드를 수정하였습니다.
 | :---: | :---: |
 | ![장바구니 질문 결과](./result_img_dir/result1.png) | ![반품 관련 질문 결과](./result_img_dir/result2.png) |
 | 주문내역 | 물건 검색 |
-| :---: | :---: |
 |![주문내역 관련 질문 결과](./result_img_dir/result3.png) | ![물건 검색 질문 결과](./result_img_dir/result4.png) |

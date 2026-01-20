@@ -25,6 +25,142 @@
 └── serving-gemma-3-4b-it-gguf.py
 ```
 
+## 2026-01-19
+
+### 4단계 진행 중: API 서버로 통합
+
+#### 전체 WorkFlow(serving-gemma-3-4b-it.gguf.py)
+  ---
+  흐름 정리
+
+  사용자: "내 장바구니 보여줘"
+           ↓
+  1. build_function_calling_prompt() → 함수 결정용 프롬프트
+           ↓
+  2. llm() → "함수: show_cart\n파라미터: {}"
+           ↓
+  3. parse_llm_output() → func_name="show_cart", params={}
+           ↓
+  4. execute_function() → {"cart_items": [...]}
+           ↓
+  5. generate_response() → "고객님의 장바구니에..."
+           ↓
+  6. return → {"response": "고객님의 장바구니에..."}
+
+  ---
+
+#### 1. 오늘 진행한 작업
+
+`serving-gemma-3-4b-it-gguf.py`에 쇼핑몰 에이전트 엔드포인트 추가 작업 진행 중.
+
+**추가한 것들:**
+- [x] import 추가 (`json`, `re`, `create_dataset` 함수들)
+- [x] 상수 추가 (`FUNCTION_MAP`, `AVAILABLE_FUNCTIONS`, `CURRENT_USER_ID`)
+- [x] 헬퍼 함수 5개 추가 (test_function_execution.py에서 복사)
+- [x] schemas.py에 `AgentChatRequest`, `AgentChatResponse` 추가
+- [ ] `/v1/agent/chat` 엔드포인트 작성
+
+---
+
+#### 2. Q&A 정리
+
+##### Q: AVAILABLE_FUNCTIONS에서 `show_cart(user_id)` 이렇게 파라미터를 적는 이유?
+
+**A**: LLM한테 **"이 함수는 어떤 파라미터가 필요해"** 라고 알려주는 것.
+
+```python
+AVAILABLE_FUNCTIONS = """
+1. show_cart(user_id) - 장바구니 조회
+2. search_product(keyword, category=None) - 상품 검색
+"""
+```
+
+LLM이 사용자 질문 "노트북 검색해줘"를 받으면:
+1. AVAILABLE_FUNCTIONS를 보고 `search_product(keyword)` 발견
+2. "아, keyword가 필요하구나"
+3. 질문에서 "노트북"을 추출해서 `{"keyword": "노트북"}` 생성
+
+**파라미터 설명이 없으면** → LLM이 뭘 넣어야 할지 모름!
+
+---
+
+##### Q: Pydantic이 뭐야? BaseModel은 뭐야?
+
+**A**:
+
+| 개념 | 설명 |
+|------|------|
+| **Pydantic** | 데이터 검증 라이브러리 |
+| **BaseModel** | Pydantic의 기본 클래스 (상속해서 사용) |
+
+**왜 쓰는가?**
+
+```python
+# Pydantic 없이 - 위험!
+def agent_chat(data):
+    message = data["message"]  # message 없으면? 에러!
+
+# Pydantic 있으면 - 안전!
+class AgentChatRequest(BaseModel):
+    message: str  # "message는 반드시 문자열!"
+
+def agent_chat(request: AgentChatRequest):
+    message = request.message  # 이미 검증됨, 안전!
+```
+
+**Pydantic이 자동으로 해주는 것:**
+- 1. 타입 체크 (message가 str인지)
+- 2. JSON → Python 객체 자동 변환
+- 3. 잘못된 요청 시 에러 메시지 자동 생성
+
+**실제 동작:**
+```python
+# 클라이언트가 보내는 JSON
+{"message": "내 장바구니 보여줘"}
+
+# FastAPI + Pydantic이 자동 변환
+request = AgentChatRequest(message="내 장바구니 보여줘")
+print(request.message)  # "내 장바구니 보여줘"
+
+# 잘못된 요청 (숫자를 보냄)
+{"message": 12345}
+# → Pydantic이 자동으로 에러 반환: "message must be a string"
+```
+
+---
+
+#### 3. 현재 진행 상황
+
+```
+[x] 1단계: Function Calling 테스트
+[x] 2단계: 함수 실행 연동
+[x] 3단계: 응답 생성
+[ ] 4단계: API 서버로 통합 ← 진행 중!
+    [x] import 추가
+    [x] 상수 추가
+    [x] 헬퍼 함수 추가
+    [x] schemas.py 모델 추가
+    [ ] 엔드포인트 작성
+```
+
+---
+
+#### 4. 다음 할 일
+
+`serving-gemma-3-4b-it-gguf.py`에 `/v1/agent/chat` 엔드포인트 작성:
+
+```python
+@app.post("/v1/agent/chat", response_model=AgentChatResponse)
+async def agent_chat(request: AgentChatRequest):
+    # 1. 함수 결정 (LLM)
+    # 2. 파싱
+    # 3. 함수 실행
+    # 4. 자연어 응답 생성 (LLM)
+    # 5. 반환
+```
+
+---
+
 ## 2026-01-16 (2)
 
 ### 2단계 완료: 함수 실행 연동
